@@ -2,6 +2,7 @@ package com.org.moneykeep.Recevier.Service;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_MIN;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -81,8 +82,14 @@ public class LocalForegroundService extends Service {
             NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             // 正式创建
             service.createNotificationChannel(channel);
-            PendingIntent pendingIntent = PendingIntent.getActivities(this,0,
-                    new Intent[]{new Intent(this, UserMainActivity.class)},0);
+            Intent intent = new Intent(this, UserMainActivity.class);
+            intent.setAction("android.intent.action.MAIN");
+            intent.addCategory("android.intent.category.LAUNCHER");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+            @SuppressLint("UnspecifiedImmutableFlag")
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,
+                    intent,PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "service");
             Notification notification = builder.setOngoing(true)
                     .setSmallIcon(R.mipmap.app_icon_foreground)
