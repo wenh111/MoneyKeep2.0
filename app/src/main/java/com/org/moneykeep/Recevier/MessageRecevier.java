@@ -172,7 +172,6 @@ public class MessageRecevier extends BroadcastReceiver {
         public void onReceiveLocation(BDLocation bdLocation) {
             if (isFirstLoc) {
                 isFirstLoc = false;
-
                 //获取详细地址信息
                 city = bdLocation.getCity();
                 district = bdLocation.getDistrict();
@@ -254,6 +253,7 @@ public class MessageRecevier extends BroadcastReceiver {
 
                 // 退出时销毁定位
                 if (mLocClient != null) {
+                    isFirstLoc = true;
                     mLocClient.stop();
                 }
 

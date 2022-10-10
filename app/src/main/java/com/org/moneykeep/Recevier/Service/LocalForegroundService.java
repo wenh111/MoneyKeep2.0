@@ -11,10 +11,12 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.org.moneykeep.Activity.UserMainActivity;
 import com.org.moneykeep.IMyAidlInterface;
 import com.org.moneykeep.R;
+import com.org.moneykeep.Recevier.MessageRecevier;
 
 /**
  * 前台服务提权
@@ -56,10 +59,12 @@ public class LocalForegroundService extends Service {
     public void onCreate() {
         super.onCreate();
 
-
         // 创建 Binder 对象
         myBinder = new MyBinder();
-
+        IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        localIntentFilter.setPriority(2147483647);
+        MessageRecevier localMessageReceiver = new MessageRecevier();
+        registerReceiver(localMessageReceiver, localIntentFilter);
         // 启动前台进程
         startService();
     }
