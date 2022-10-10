@@ -11,22 +11,16 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-
-import com.bumptech.glide.Glide;
 import com.org.moneykeep.Activity.UserMainActivity;
 import com.org.moneykeep.IMyAidlInterface;
 import com.org.moneykeep.R;
-import com.org.moneykeep.Recevier.MessageRecevier;
 
 /**
  * 前台服务提权
@@ -47,7 +41,7 @@ public class LocalForegroundService extends Service {
 
 
         @Override
-        public void basicTypes() throws RemoteException {
+        public void basicTypes() {
 
         }
     }
@@ -119,9 +113,6 @@ public class LocalForegroundService extends Service {
         // LocalForegroundService 与 RemoteForegroundService 两个服务互相绑定
 
         // 创建连接对象
-        /**
-         * 连接对象
-         */
         Connection connection = new Connection();
 
         // 创建本地前台进程组件意图

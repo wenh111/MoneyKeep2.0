@@ -15,7 +15,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -111,9 +110,6 @@ public class RemoteForegroundService extends Service {
         // LocalForegroundService 与 RemoteForegroundService 两个服务互相绑定
 
         // 创建连接对象
-        /**
-         * 连接对象
-         */
         Connection connection = new Connection();
 
         // 创建本地前台进程组件意图
