@@ -3,17 +3,16 @@ plugins {
 }
 
 android {
-    compileSdk 31
-
+    compileSdk 32
+    buildToolsVersion '33.0.0'
     defaultConfig {
         applicationId "com.org.moneykeep"
-        minSdk 29
-        targetSdk 31
+        minSdk 21
+        targetSdk 32
         versionCode 1
         versionName "1.0"
-//android studio 4.0 以上打包会出现这个问题
+        //android studio 4.0 以上打包会出现这个问题
         lintOptions { checkReleaseBuilds false }
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,6 +39,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    buildToolsVersion '33.0.0'
 }
 
 dependencies {
@@ -71,5 +71,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
-    
+    implementation 'com.android.support:multidex:'
+
 }

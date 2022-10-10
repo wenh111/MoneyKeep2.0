@@ -4,19 +4,20 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.org.moneykeep.Activity.SignInView.SignInActivity;
 import com.org.moneykeep.R;
-import com.org.moneykeep.Until.JobSchedulerUntil;
+import com.org.moneykeep.Recevier.Service.LocalForegroundService;
+import com.org.moneykeep.Recevier.Service.RemoteForegroundService;
 
 import java.util.ArrayList;
-
-import cn.bmob.v3.Bmob;
 
 public class WelcomeActivity extends AppCompatActivity {
     //private static HashMap<String, Integer> IntegerColor;
@@ -24,6 +25,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private static boolean isPermissionRequested = false;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +44,15 @@ public class WelcomeActivity extends AppCompatActivity {
         String user_name = userdata.getString("user_name", "");
         int user_id = userdata.getInt("user_objectId", 0);
 
-        JobSchedulerUntil.scheduleJob(getApplicationContext(),1000);
+
+        //JobSchedulerUntil.scheduleJob(getApplicationContext(),1000);
         /*Intent service = new Intent(getApplicationContext(), MessageService.class);
         getApplicationContext().startForegroundService(service);*/
 
         Intent intent;
         if (user_islogin) {
+            startService(new Intent(this, LocalForegroundService.class));
+            startService(new Intent(this, RemoteForegroundService.class));
             Bundle bundle = new Bundle();
             bundle.putString("user_email", user_account);
             bundle.putString("user_name", user_name);
@@ -64,6 +69,7 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * Android6.0之后需要动态申请权限
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestPermission() {
         if (!isPermissionRequested) {
 

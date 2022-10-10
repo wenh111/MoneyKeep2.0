@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
@@ -110,6 +111,34 @@
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.org.moneykeep.BmobContentProvider" />
+
+        <service
+            android:name=".Recevier.Service.LocalForegroundService"
+            android:enabled="true"
+            android:exported="true"/>
+        <!-- 本地服务 , API 18 ~ 25 以上的设备, 关闭通知到专用服务 -->
+        <service
+            android:name=".Recevier.Service.LocalForegroundService$CancelNotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- 远程提权前台服务 Service -->
+        <service
+            android:name=".Recevier.Service.RemoteForegroundService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"/>
+        <!-- 远程服务 , API 18 ~ 25 以上的设备, 关闭通知到专用服务 -->
+        <service
+            android:name=".Recevier.Service.RemoteForegroundService$CancelNotificationService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" />
+        <service
+            android:name=".Recevier.Service.KeepAliveJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

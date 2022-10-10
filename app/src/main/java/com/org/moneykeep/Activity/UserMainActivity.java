@@ -39,7 +39,7 @@ public class UserMainActivity extends AppCompatActivity {
         localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags;
 
         requestPermission();
-        JobSchedulerUntil.scheduleJob(getApplicationContext(),1000);
+        //JobSchedulerUntil.scheduleJob(getApplicationContext(),1000);
         binding = ActivityUserMianBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
