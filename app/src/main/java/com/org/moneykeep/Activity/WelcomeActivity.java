@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.org.moneykeep.Activity.SignInView.SignInActivity;
 import com.org.moneykeep.R;
+import com.org.moneykeep.Recevier.Service.KeepAliveJobService;
 import com.org.moneykeep.Recevier.Service.LocalForegroundService;
 import com.org.moneykeep.Recevier.Service.RemoteForegroundService;
 
@@ -53,6 +54,8 @@ public class WelcomeActivity extends AppCompatActivity {
         if (user_islogin) {
             startService(new Intent(this, LocalForegroundService.class));
             startService(new Intent(this, RemoteForegroundService.class));
+            // JobScheduler 拉活
+            KeepAliveJobService.startJob(this);
             Bundle bundle = new Bundle();
             bundle.putString("user_email", user_account);
             bundle.putString("user_name", user_name);

@@ -16,6 +16,7 @@ import com.org.moneykeep.Until.JobSchedulerUntil;
 import com.org.moneykeep.databinding.ActivityUserMianBinding;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +31,7 @@ public class UserMainActivity extends AppCompatActivity {
     private ActivityUserMianBinding binding;
     private static boolean isPermissionRequested = false;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class UserMainActivity extends AppCompatActivity {
     /**
      * Android6.0之后需要动态申请权限
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestPermission() {
         if (!isPermissionRequested) {
 

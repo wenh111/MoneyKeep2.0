@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.org.moneykeep.Activity.UserMainActivity;
 import com.org.moneykeep.IMyAidlInterface;
@@ -87,7 +88,7 @@ public class RemoteForegroundService extends Service {
                     .setPriority(PRIORITY_MIN)
                     .setCategory(Notification.CATEGORY_SERVICE)
                     .setContentIntent(pendingIntent)
-                    .setContentText("程序在后台运行中")
+                    .setContentTitle("程序在后台运行中")
                     .build();
 
             // 开启前台进程 , API 26 以上无法关闭通知栏
