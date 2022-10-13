@@ -1,6 +1,7 @@
 package com.org.moneykeep.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -80,7 +81,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             ArrayList<String> permissionsList = new ArrayList<>();
 
-            String[] permissions = {
+            @SuppressLint("InlinedApi") String[] permissions = {
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.ACCESS_NETWORK_STATE,
                     Manifest.permission.INTERNET,
@@ -97,6 +98,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     Manifest.permission.READ_SMS,
                     Manifest.permission.RECEIVE_BOOT_COMPLETED,
                     Manifest.permission.RECEIVE_SMS,
+                    Manifest.permission.FOREGROUND_SERVICE,
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION
 
 

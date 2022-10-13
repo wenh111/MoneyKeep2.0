@@ -26,6 +26,7 @@ android {
     sourceSets {
         main {
             jniLibs.srcDir 'libs'
+            aidl.srcDirs = ['src/main/aidl']
         }
         debug {
             java.srcDirs = ['src/main/java', 'build/generated/data_binding_base_class_source_out/debug/out']

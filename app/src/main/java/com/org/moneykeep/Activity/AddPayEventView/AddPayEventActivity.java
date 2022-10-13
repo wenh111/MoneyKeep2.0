@@ -478,4 +478,6 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
         }
 
     }
+
+
 }

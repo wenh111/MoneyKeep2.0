@@ -58,7 +58,7 @@ public class LocalForegroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Log.v("dimos", "LocalForegroundService");
         // 创建 Binder 对象
         myBinder = new MyBinder();
         IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
