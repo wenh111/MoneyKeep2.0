@@ -26,6 +26,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.org.moneykeep.Activity.OCRView.OCRActivity;
 import com.org.moneykeep.Dialog.GetBankMessageDialog;
 import com.org.moneykeep.Dialog.ThisTimePickerDialog;
 import com.org.moneykeep.Dialog.TypePickerDialog;
@@ -46,7 +47,8 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
     private EditText ed_time, ed_location, ed_type, ed_money, ed_remark;
     private Button but_add;
     private AddPayEventInterface.IPresenter iPresenter;
-
+    private Boolean hasGotToken = false;
+    private static boolean isPermissionRequested = false;
     private ActivityResultLauncher<Intent> intentActivityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onActivityResult);
 
@@ -64,9 +66,9 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
 
         iPresenter = new AddPayEventPresenterImplements(this, this);
         FindId();
-
+        //requestPermission();
         initLocation();
-
+        //initAccessToken();
         SetListen();
         but_finish.getBackground().setAlpha(0);
         but_summit.getBackground().setAlpha(0);
@@ -192,6 +194,7 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
 
     //点击事件监听
     private class Onclick implements View.OnClickListener {
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -212,6 +215,7 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
                     break;
                 case R.id.but_add:
                     getMessage();
+
                     break;
             }
         }

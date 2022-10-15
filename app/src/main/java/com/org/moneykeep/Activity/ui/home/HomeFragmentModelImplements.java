@@ -1,5 +1,6 @@
 package com.org.moneykeep.Activity.ui.home;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.org.moneykeep.Until.RetrofitUntil;
@@ -24,6 +25,7 @@ public class HomeFragmentModelImplements implements HomeFragmentInterface.IModel
         api = retrofit.create(HomeFragmentAPI.class);
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     public void SelectDayMessage(PayEventBean payEventBean) {
         Call<PayEventListBean> payEventListBeanCall = api.SelectDayPayMessage(payEventBean.getAccount(),
@@ -118,6 +120,7 @@ public class HomeFragmentModelImplements implements HomeFragmentInterface.IModel
     public void deletePayEvent(int id) {
         Call<Integer> payEventListBeanCall = api.DeleteDayPayMessage(id);
         payEventListBeanCall.enqueue(new Callback<Integer>() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Log.i("deletePayEventSuccessfulCallBack =======>", String.valueOf(response.code()));
@@ -127,6 +130,7 @@ public class HomeFragmentModelImplements implements HomeFragmentInterface.IModel
                 }
             }
 
+            @SuppressLint("LongLogTag")
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 iPresenter.deletePayEventUnSuccessfulCallBack("删除失败:" + t.getMessage());

@@ -3,7 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_add_pay_event.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_add_save_money_plan.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_details.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_forget_password.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_get_location.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_ocractivity.xml" value="0.340625" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_user_mian.xml" value="0.2140625" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_notifications.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_day_payorincome.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_month_payorincome.xml" value="0.18072916666666666" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_savemoney.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/mipmap-anydpi-v26/app_icon.xml" value="0.173" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/ocr_ui/src/main/res/layout/bd_ocr_activity_camera.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/ocr_ui/src/main/res/layout/bd_ocr_crop.xml" value="0.18020833333333333" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/ocr_ui/src/main/res/layout/bd_ocr_take_picture.xml" value="0.35520833333333335" />
         <entry key="..\:/编程/MoneyKeepApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1955" />
         <entry key="..\:/编程/MoneyKeepApp/app/src/main/res/drawable/add_pay_background.xml" value="0.1955" />
         <entry key="..\:/编程/MoneyKeepApp/app/src/main/res/drawable/but_ripple.xml" value="0.193" />

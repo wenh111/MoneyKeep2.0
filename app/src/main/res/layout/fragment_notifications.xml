@@ -121,7 +121,14 @@
             android:gravity="center"
             android:orientation="vertical"
             android:showDividers="middle">
-
+            <Button
+                android:id="@+id/but_ocr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_fragment_setting_background"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="微信账单导入" />
             <Button
                 android:id="@+id/but_update_password"
                 android:layout_width="match_parent"

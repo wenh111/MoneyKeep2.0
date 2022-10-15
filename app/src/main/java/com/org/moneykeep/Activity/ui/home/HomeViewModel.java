@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.org.moneykeep.R;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,14 @@ public class HomeViewModel extends ViewModel {
         perPage = new MutableLiveData<>();
         isOver = new MutableLiveData<>();
         img = new HashMap<>();
+
+        Calendar calendar = Calendar.getInstance();
+        int now_year = calendar.get(Calendar.YEAR);
+        int now_month = calendar.get(Calendar.MONTH) + 1;
+        int now_day = calendar.get(Calendar.DAY_OF_MONTH);
+        String now_date = now_year + "-" + now_month + "-" + now_day;
+        date.setValue(now_date);
+        type.setValue("全部类型");
         isOver.setValue(false);
         since.setValue(-1);
         perPage.setValue(-1);

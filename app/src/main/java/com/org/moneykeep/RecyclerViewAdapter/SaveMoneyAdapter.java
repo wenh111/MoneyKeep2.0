@@ -1,6 +1,7 @@
 package com.org.moneykeep.RecyclerViewAdapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,6 +66,7 @@ public class SaveMoneyAdapter extends RecyclerView.Adapter<SaveMoneyAdapter.Line
         return new LinearViewHolder(LayoutInflater.from(context).inflate(R.layout.recycler_view_item_savemoney, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull LinearViewHolder holder, int position) {
 

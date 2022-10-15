@@ -121,8 +121,17 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                 dates[i] = "0" + dates[i];
             }
         }
+        String e_date;
+        if (dates.length == 0){
+            Calendar calendar = Calendar.getInstance();
+            int now_year = calendar.get(Calendar.YEAR);
+            int now_month = calendar.get(Calendar.MONTH) + 1;
+            int now_day = calendar.get(Calendar.DAY_OF_MONTH);
+            e_date = now_year + "-" + now_month + "-" + now_day;
+        }else{
+            e_date = String.format("%s-%s-%s", dates[0], dates[1], dates[2]);
+        }
 
-        String e_date = String.format("%s-%s-%s", dates[0], dates[1], dates[2]);
         //binding.nowTime.setText(homeViewModel.getDate().getValue());
         binding.selectDate.setText(e_date);
         binding.selectType.setText(homeViewModel.getType().getValue());

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.org.moneykeep.Activity.DetailsView.DetailsActivity;
 import com.org.moneykeep.Activity.ui.home.HomeFragmentAPI;
-import com.org.moneykeep.BmobTable.AllPay;
 import com.org.moneykeep.Dialog.DeleteDialog;
 import com.org.moneykeep.R;
 import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.DayPayOrIncomeList;
@@ -34,8 +35,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,6 +78,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
         return new MonthRecyclerViewAdapter.LinearViewHolder(LayoutInflater.from(context).inflate(R.layout.recycler_view_item_month_payorincome, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull LinearViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -230,6 +230,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
                         HomeFragmentAPI api = retrofit.create(HomeFragmentAPI.class);
                         Call<Integer> integerCall = api.DeleteDayPayMessage(delete_ObjectId);
                         integerCall.enqueue(new Callback<Integer>() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (response.code() == HttpURLConnection.HTTP_OK) {

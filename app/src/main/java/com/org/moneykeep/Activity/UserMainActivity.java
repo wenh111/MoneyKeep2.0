@@ -32,7 +32,6 @@ public class UserMainActivity extends AppCompatActivity {
     private ActivityUserMianBinding binding;
     private static boolean isPermissionRequested = false;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +60,7 @@ public class UserMainActivity extends AppCompatActivity {
     /**
      * Android6.0之后需要动态申请权限
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void requestPermission() {
         if (!isPermissionRequested) {
 
@@ -102,7 +101,7 @@ public class UserMainActivity extends AppCompatActivity {
             if (permissionsList.isEmpty()) {
                 return;
             } else {
-                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 0);
+                requestPermissions(permissionsList.toArray(new String[0]), 0);
             }
         }
     }

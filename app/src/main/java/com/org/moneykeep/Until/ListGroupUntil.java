@@ -1,5 +1,9 @@
 package com.org.moneykeep.Until;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.org.moneykeep.BmobTable.AllPay;
 import com.org.moneykeep.retrofitBean.PayEventListBean;
 import com.org.moneykeep.retrofitBean.PayOrIncomeEventListBean;
@@ -10,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class ListGroupUntil {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static Map<String, List<AllPay>> groupMonthList(List<AllPay> dateList) {
         Map<String, List<AllPay>> map = dateList.stream().collect(Collectors.groupingBy(AllPay::getDate));
         return map;

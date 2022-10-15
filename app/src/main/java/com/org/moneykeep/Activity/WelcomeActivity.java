@@ -73,12 +73,10 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * Android6.0之后需要动态申请权限
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void requestPermission() {
         if (!isPermissionRequested) {
-
             isPermissionRequested = true;
-
             ArrayList<String> permissionsList = new ArrayList<>();
 
             @SuppressLint("InlinedApi") String[] permissions = {
@@ -100,8 +98,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     Manifest.permission.RECEIVE_SMS,
                     Manifest.permission.FOREGROUND_SERVICE,
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION
-
-
             };
 
             for (String perm : permissions) {
@@ -114,7 +110,7 @@ public class WelcomeActivity extends AppCompatActivity {
             if (permissionsList.isEmpty()) {
                 return;
             } else {
-                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 0);
+                requestPermissions(permissionsList.toArray(new String[0]), 0);
             }
         }
     }

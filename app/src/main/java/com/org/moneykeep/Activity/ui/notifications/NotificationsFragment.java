@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.org.moneykeep.Activity.ForgetPasswordView.AuthenticationView.ForgetPasswordActivity;
+import com.org.moneykeep.Activity.OCRView.OCRActivity;
 import com.org.moneykeep.Activity.SignInView.SignInActivity;
 import com.org.moneykeep.Dialog.UpdateRemarkDialog;
 import com.org.moneykeep.R;
@@ -70,6 +71,14 @@ public class NotificationsFragment extends Fragment {
 
     private final ActivityResultLauncher<Intent> intentActivityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onActivityResult);
+    /*ActivityResultLauncher<Intent> intentPictureResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),this::onPictureResult);
+
+    private  void onPictureResult(ActivityResult result) {
+        if(result.getResultCode() == Activity.RESULT_OK){
+
+        }
+    }*/
     /*private boolean needDownload = true;*/
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -265,6 +274,7 @@ public class NotificationsFragment extends Fragment {
         user_icon.setOnClickListener(onclick);
         but_update_password.setOnClickListener(onclick);
         binding.updateName.setOnClickListener(onclick);
+        binding.butOcr.setOnClickListener(onclick);
     }
 
     private void onActivityResult(ActivityResult result) {
@@ -360,9 +370,21 @@ public class NotificationsFragment extends Fragment {
                         }
                     }).show();
                     break;
+                case R.id.but_ocr:
+                    Intent OCRiIntent = new Intent(requireContext(), OCRActivity.class);
+                    startActivity(OCRiIntent);
+                    //choosePicture();
+                    break;
             }
         }
     }
+
+    /*private void choosePicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intentPictureResultLauncher.launch(intent);
+        //startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+    }*/
 
     private void ChangeIcon() {
         Intent intent = new Intent();

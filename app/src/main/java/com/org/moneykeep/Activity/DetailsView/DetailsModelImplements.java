@@ -1,5 +1,6 @@
 package com.org.moneykeep.Activity.DetailsView;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class DetailsModelImplements implements DetailsInterface.IModel {
     public void UpdateMessage(PayEventBean allPay) {
         Call<Integer> integerCall = api.UpdatePayMessage(allPay);
         integerCall.enqueue(new Callback<Integer>() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

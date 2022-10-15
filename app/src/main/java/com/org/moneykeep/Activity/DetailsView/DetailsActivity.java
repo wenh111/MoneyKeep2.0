@@ -1,6 +1,7 @@
 package com.org.moneykeep.Activity.DetailsView;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -97,6 +99,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsInterfa
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void getDetailsMessageSuccessful(PayEventBean body) {
         detail_type.setText(body.getCategory());
@@ -117,6 +120,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsInterfa
         finish();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void UpdateMessageSuccessful(String s) {
         String category = updateList.getType();
