@@ -114,7 +114,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
                     dayPayOrIncomeList.setId(objectId);
                     dayPayOrIncomeList.setInt_time(Integer.valueOf(int_time));
                     dayPayOrIncomeList.setCategory(date.getCategory());
-                    dayPayOrIncomeList.setPayTime(date.getTime());
+                    dayPayOrIncomeList.setTime(date.getTime());
                     dayPayOrIncomeList.setLocation(getLocation);
                     dayPayOrIncomeList.setCost(set_cost);
                     dayPayOrIncomeList.setRemark(date.getRemark());

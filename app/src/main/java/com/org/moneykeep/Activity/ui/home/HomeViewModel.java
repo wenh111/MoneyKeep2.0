@@ -59,7 +59,7 @@ public class HomeViewModel extends ViewModel {
         mText.setValue("This is home fragment");
 
         {
-            img.put("餐饮",R.mipmap.restaurant_128);
+            img.put("餐饮", R.mipmap.restaurant_128);
             img.put("交通", R.mipmap.traffic_128);
             img.put("服饰", R.mipmap.clothes_128);
             img.put("购物", R.mipmap.shopping_128);
@@ -83,10 +83,11 @@ public class HomeViewModel extends ViewModel {
             img.put("奖金", R.mipmap.bonus_128);
             img.put("收红包", R.mipmap.get_envelopes_128);
             img.put("收转账", R.mipmap.get_transfer_accounts_128);
-            img.put("其它收入",R.mipmap.others_128);
+            img.put("其它收入", R.mipmap.others_128);
             img.put("建设银行", R.mipmap.construction_bank_128);
             img.put("农业银行", R.mipmap.agricultural_bank_128);
-            img.put("全部类型",R.mipmap.all_128);
+            img.put("微信", R.mipmap.wechat_128);
+            img.put("全部类型", R.mipmap.all_128);
         }
 
 
@@ -117,7 +118,7 @@ public class HomeViewModel extends ViewModel {
         return mText;
     }
 
-    public int getSrc(String type){
+    public int getSrc(String type) {
         return img.getOrDefault(type, R.mipmap.others_128);
     }
 }

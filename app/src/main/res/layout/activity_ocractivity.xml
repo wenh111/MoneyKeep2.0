@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".Activity.OCRView.OCRActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -24,13 +25,13 @@
             tools:ignore="NestedWeights" />
 
         <TextView
-            android:id="@+id/text_view"
+            android:id="@+id/testView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_weight="8"
             android:gravity="center_vertical"
-            android:text="新建收支情况"
+            android:text="微信账单录入"
             android:textColor="#000000"
             android:textSize="25sp" />
 
@@ -44,22 +45,31 @@
             android:src="@mipmap/summit_48_break" />
 
     </LinearLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/ocr_textview"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
 
         <Button
             android:id="@+id/button_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
             android:text="文字识别" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

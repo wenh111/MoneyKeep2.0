@@ -2,7 +2,7 @@ package com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList;
 
 public class DayPayOrIncomeList {
     private int id;
-    private String payTime;
+    private String time;
     private String location;
     private String account;
     private String category;
@@ -62,12 +62,12 @@ public class DayPayOrIncomeList {
         this.objectId = objectId;
     }
 
-    public String getPayTime() {
-        return payTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setPayTime(String payTime) {
-        this.payTime = payTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getLocation() {

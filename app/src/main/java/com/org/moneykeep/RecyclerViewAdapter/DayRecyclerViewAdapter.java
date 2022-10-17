@@ -3,7 +3,6 @@ package com.org.moneykeep.RecyclerViewAdapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,7 +76,6 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull LinearViewHolder holder, int position) {
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -95,6 +92,9 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
 
 
         if (Double.parseDouble(Data.get(position).getCost()) > 0) {
+            if(!Data.get(position).getCost().contains("+")){
+                Data.get(position).setCost("+" + Data.get(position).getCost());
+            }
             holder.tx_money.setTextColor(ContextCompat.getColor(getContext(), R.color.income_color));
         } else {
             holder.tx_money.setTextColor(ContextCompat.getColor(getContext(), R.color.envelopes));
@@ -104,7 +104,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
         holder.left_color.setBackground(gradientDrawable);
         holder.tx_type.setText(Data.get(position).getCategory());
         holder.tx_location.setText(Data.get(position).getLocation());
-        holder.tx_time.setText(Data.get(position).getPayTime());
+        holder.tx_time.setText(Data.get(position).getTime());
         holder.tx_money.setText(Data.get(position).getCost());
         holder.tx_remark.setText(Data.get(position).getRemark());
         mItemManger.bindView(holder.itemView, position);//实现只展现一条列表项的侧滑区域
@@ -160,6 +160,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                 IntegerColor.put("其它收入", ContextCompat.getColor(getContext(), R.color.other_income));
                 IntegerColor.put("建设银行", ContextCompat.getColor(getContext(), R.color.Construction_Bank));
                 IntegerColor.put("农业银行", ContextCompat.getColor(getContext(), R.color.Agricultural_Bank));
+                IntegerColor.put("微信",ContextCompat.getColor(getContext(), R.color.wechat));
             }
             parent_ly = itemView.findViewById(R.id.parent_ly);
             left_color = itemView.findViewById(R.id.left_color);

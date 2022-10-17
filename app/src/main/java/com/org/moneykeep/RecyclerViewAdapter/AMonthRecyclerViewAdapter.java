@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +23,6 @@ import com.org.moneykeep.Activity.ui.home.HomeFragmentAPI;
 import com.org.moneykeep.Dialog.DeleteDialog;
 import com.org.moneykeep.R;
 import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.DayPayOrIncomeList;
-import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.MonthPayOrIncomeList;
 import com.org.moneykeep.Until.ChangeDouble;
 import com.org.moneykeep.Until.RetrofitUntil;
 import com.org.moneykeep.retrofitBean.PayEventListBean;
@@ -35,7 +31,6 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,7 +94,6 @@ public class AMonthRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -134,7 +128,7 @@ public class AMonthRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 dayPayOrIncomeList.setId(objectId);
                 dayPayOrIncomeList.setInt_time(Integer.parseInt(int_time));
                 dayPayOrIncomeList.setCategory(date.getCategory());
-                dayPayOrIncomeList.setPayTime(date.getTime());
+                dayPayOrIncomeList.setTime(date.getTime());
                 dayPayOrIncomeList.setLocation(getLocation);
                 dayPayOrIncomeList.setCost(set_cost);
                 dayPayOrIncomeList.setRemark(date.getRemark());
@@ -318,8 +312,10 @@ public class AMonthRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     static class PayEventFootHolder extends RecyclerView.ViewHolder {
-        private TextView textView, left, right;
-        private LinearLayout linearLayout;
+        private final TextView textView;
+        private TextView left;
+        private TextView right;
+        private final LinearLayout linearLayout;
 
         public PayEventFootHolder(@NonNull View itemView) {
             super(itemView);

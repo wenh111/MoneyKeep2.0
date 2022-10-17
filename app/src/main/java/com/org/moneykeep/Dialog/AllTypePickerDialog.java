@@ -53,8 +53,8 @@ public class AllTypePickerDialog extends Dialog implements View.OnClickListener 
         but_cancel.setOnClickListener(this);
         but_summit.setOnClickListener(this);
 
-        String[] getPayOrIncome = {"支出", "收入","全部","银行卡"};
-        PayOrIncomePicker.setMaxValue(getPayOrIncome.length-1);
+        String[] getPayOrIncome = {"支出", "收入", "全部", "银行卡"};
+        PayOrIncomePicker.setMaxValue(getPayOrIncome.length - 1);
         PayOrIncomePicker.setMinValue(0);
         PayOrIncomePicker.setDisplayedValues(getPayOrIncome);
         PayOrIncomePicker.setValue(0);
@@ -71,23 +71,23 @@ public class AllTypePickerDialog extends Dialog implements View.OnClickListener 
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 typePicker.setMaxValue(0);
-                if (PayOrIncomePicker.getValue() == 0){
+                if (PayOrIncomePicker.getValue() == 0) {
                     typePicker.setDisplayedValues(getContext().getResources().getStringArray(R.array.pay));
                     typePicker.setMaxValue(getContext().getResources().getStringArray(R.array.pay).length - 1);
                     typePicker.setMinValue(0);
                     typePicker.setValue(0);
-                }else if (PayOrIncomePicker.getValue() == 1){
+                } else if (PayOrIncomePicker.getValue() == 1) {
                     typePicker.setDisplayedValues(getContext().getResources().getStringArray(R.array.income));
                     typePicker.setMaxValue(getContext().getResources().getStringArray(R.array.income).length - 1);
                     typePicker.setMinValue(0);
                     typePicker.setValue(0);
-                }else if(PayOrIncomePicker.getValue() == 2){
-                    String[] all ={"全部类型"};
+                } else if (PayOrIncomePicker.getValue() == 2) {
+                    String[] all = {"全部类型", "微信"};
                     typePicker.setDisplayedValues(all);
-                    typePicker.setMaxValue(0);
+                    typePicker.setMaxValue(all.length - 1);
                     typePicker.setMinValue(0);
                     typePicker.setValue(0);
-                }else if(PayOrIncomePicker.getValue() == 3){
+                } else if (PayOrIncomePicker.getValue() == 3) {
                     typePicker.setDisplayedValues(getContext().getResources().getStringArray(R.array.BankCard));
                     typePicker.setMaxValue(getContext().getResources().getStringArray(R.array.BankCard).length - 1);
                     typePicker.setMinValue(0);

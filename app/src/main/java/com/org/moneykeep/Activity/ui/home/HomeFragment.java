@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                 new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-       // binding.imageRadio.getBackground().setAlpha(0);
+        // binding.imageRadio.getBackground().setAlpha(0);
         //scaleAnimation();
         if (savedInstanceState == null) {
             Calendar calendar = Calendar.getInstance();
@@ -122,13 +122,13 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
             }
         }
         String e_date;
-        if (dates.length == 0){
+        if (dates.length == 0) {
             Calendar calendar = Calendar.getInstance();
             int now_year = calendar.get(Calendar.YEAR);
             int now_month = calendar.get(Calendar.MONTH) + 1;
             int now_day = calendar.get(Calendar.DAY_OF_MONTH);
             e_date = now_year + "-" + now_month + "-" + now_day;
-        }else{
+        } else {
             e_date = String.format("%s-%s-%s", dates[0], dates[1], dates[2]);
         }
 
@@ -190,8 +190,8 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                         }
 
                         Log.i("ScrollStateChanged", "------------------->" + "到底了");
-                    }else if (!recyclerView.canScrollVertically(-1)){
-                        if(isMore){
+                    } else if (!recyclerView.canScrollVertically(-1)) {
+                        if (isMore) {
                             isMore = false;
                             binding.imageRadio.setImageResource(R.mipmap.down_16);
                             //Glide.with(requireView()).load(R.mipmap.down_16).into(binding.imageRadio);
@@ -208,7 +208,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                 if (dy > 0) { // 当前处于上滑状态
                     Log.i("ScrollStateChanged", "------------------->" + "向上滑");
                     Log.i("ScrollStateChanged", "------------------->" + isMore);
-                    if(isMore){
+                    if (isMore) {
                         isMore = false;
                         binding.imageRadio.setImageResource(R.mipmap.down_16);
                         //binding.radioGroup.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.scale_small));
@@ -495,7 +495,8 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                             stringArray = requireContext().getResources().getStringArray(R.array.income);
                             type = stringArray[secondValue];
                         } else if (firstValue == 2) {
-                            type = "全部类型";
+                            stringArray = new String[]{"全部类型", "微信"};
+                            type = stringArray[secondValue];
                             //but_select_type.setText("全部类型");
                         } else if (firstValue == 3) {
                             stringArray = requireContext().getResources().getStringArray(R.array.BankCard);
@@ -514,12 +515,12 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                     }).show();
                     break;
                 case R.id.image_radio:
-                    if(isMore){
+                    if (isMore) {
                         isMore = false;
                         binding.imageRadio.setImageResource(R.mipmap.down_16);
                         //Glide.with(requireView()).load(R.mipmap.down_16).into(binding.imageRadio);
                         binding.radioGroup.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         isMore = true;
                         //Glide.with(requireView()).load(R.mipmap.up_16).into(binding.imageRadio);
                         binding.imageRadio.setImageResource(R.mipmap.up_16);
@@ -547,7 +548,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
         @SuppressLint("NonConstantResourceId")
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int ButtonId) {
-            if(isMore){
+            if (isMore) {
                 isMore = false;
                 binding.imageRadio.setImageResource(R.mipmap.down_16);
                 //Glide.with(requireView()).load(R.mipmap.down_16).into(binding.imageRadio);
@@ -608,8 +609,9 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
         int perPage = homeViewModel.getPerPage().getValue() == null ? -1 : homeViewModel.getPerPage().getValue();*/
 
         //iPresenter.getMonthMessage(user_account, select_type, select_month, select_year);
-        iPresenter.getAMonthOrYearMessage(user_account, select_type, select_month, select_year, -1, -1, 0,select_date);
+        iPresenter.getAMonthOrYearMessage(user_account, select_type, select_month, select_year, -1, -1, 0, select_date);
     }
+
     private Animation bigAnimation, smallAnimation;
 
     /*private void scaleAnimation() {

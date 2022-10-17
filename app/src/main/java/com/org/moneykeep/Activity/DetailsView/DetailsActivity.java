@@ -68,6 +68,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsInterfa
             img.put("收红包", R.mipmap.get_envelopes_128);
             img.put("收转账", R.mipmap.get_transfer_accounts_128);
             img.put("其它收入",R.mipmap.others_128);
+            img.put("微信",R.mipmap.wechat_128);
             img.put("建设银行", R.mipmap.construction_bank_128);
             img.put("农业银行", R.mipmap.agricultural_bank_128);
             img.put("全部类型",R.mipmap.all_128);
@@ -99,7 +100,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsInterfa
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void getDetailsMessageSuccessful(PayEventBean body) {
         detail_type.setText(body.getCategory());
@@ -120,7 +120,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsInterfa
         finish();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public void UpdateMessageSuccessful(String s) {
         String category = updateList.getType();
