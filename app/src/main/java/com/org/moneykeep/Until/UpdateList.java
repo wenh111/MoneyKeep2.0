@@ -6,6 +6,15 @@ public class UpdateList {
     private String cost;
     private String date;
     private String remark;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public int getId() {
         return id;

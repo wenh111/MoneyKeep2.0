@@ -140,7 +140,42 @@
             android:text="修改"
             android:textColor="#5F698C" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout_location"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="地点："
+            android:textColor="#737373" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="10"
+            android:singleLine="true"
+            android:text="珠海科技学院附近"
+            android:textColor="#737373" />
+
+        <TextView
+            android:id="@+id/tv_update_location"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="修改"
+            android:textColor="#5F698C" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/LY_1"

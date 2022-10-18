@@ -9,6 +9,7 @@ import com.baidu.ocr.sdk.model.GeneralParams;
 import com.baidu.ocr.sdk.model.GeneralResult;
 import com.baidu.ocr.sdk.model.WordSimple;
 import com.google.gson.Gson;
+import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.OCRBean;
 
 import java.io.File;
 

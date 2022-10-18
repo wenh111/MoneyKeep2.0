@@ -56,15 +56,16 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
 
         getData().remove(position);
         notifyItemRemoved(position);
-        //notifyItemRangeRemoved(position,getData().size()-position);
-
         if (onInnerRecyclerItemCostChangeListener != null) {
             onInnerRecyclerItemCostChangeListener.InnerRecyclerItemCostChangeListener(cost);
         }
 
-        //notifyDataSetChanged();
-        //notifyItemRangeChanged(0, Data.size());
-        //notifyItemRangeRemoved(position,getData().size()-1);
+
+    }
+
+    public void updateData(int position, DayPayOrIncomeList dayPayOrIncomeList) {
+        getData().set(position, dayPayOrIncomeList);
+        notifyItemChanged(position);
 
     }
 
@@ -92,7 +93,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
 
 
         if (Double.parseDouble(Data.get(position).getCost()) > 0) {
-            if(!Data.get(position).getCost().contains("+")){
+            if (!Data.get(position).getCost().contains("+")) {
                 Data.get(position).setCost("+" + Data.get(position).getCost());
             }
             holder.tx_money.setTextColor(ContextCompat.getColor(getContext(), R.color.income_color));
@@ -124,7 +125,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
     class LinearViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout left_color, parent_ly;
         public TextView tx_type, tx_time, tx_location, tx_money, tx_remark;
-        public ImageButton image_delete,image_detail;
+        public ImageButton image_delete, image_detail;
         public SwipeLayout swipeLayout;
         public HashMap<String, Integer> IntegerColor;
 
@@ -160,7 +161,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                 IntegerColor.put("其它收入", ContextCompat.getColor(getContext(), R.color.other_income));
                 IntegerColor.put("建设银行", ContextCompat.getColor(getContext(), R.color.Construction_Bank));
                 IntegerColor.put("农业银行", ContextCompat.getColor(getContext(), R.color.Agricultural_Bank));
-                IntegerColor.put("微信",ContextCompat.getColor(getContext(), R.color.wechat));
+                IntegerColor.put("微信", ContextCompat.getColor(getContext(), R.color.wechat));
             }
             parent_ly = itemView.findViewById(R.id.parent_ly);
             left_color = itemView.findViewById(R.id.left_color);
@@ -190,11 +191,11 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                         float dx = curX - startX;
                         if (Math.abs(dx) < 6) {
                             Log.i("onInterceptTouchEvent", "durationMs == " + durationMs);
-                            if (durationMs < 500) {
-                                if((!isOpen(getAdapterPosition()))){
+                            if (durationMs < 1000) {
+                                if ((!isOpen(getAdapterPosition()))) {
                                     if (onRecyclerItemClickListener != null) {
                                         closeAllItems();
-                                        onRecyclerItemClickListener.OnRecyclerOnItemClickListener(getData().get(getAdapterPosition()).getId());
+                                        onRecyclerItemClickListener.OnRecyclerOnItemClickListener(getData().get(getAdapterPosition()).getId(), getData().get(getAdapterPosition()), getAdapterPosition());
                                     }
                                 }
                             }
@@ -226,7 +227,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                 @Override
                 public void onClick(View v) {
                     if (onRecyclerItemClickListener != null) {
-                        onRecyclerItemClickListener.OnRecyclerOnItemClickListener(getData().get(getAdapterPosition()).getId());
+                        onRecyclerItemClickListener.OnRecyclerOnItemClickListener(getData().get(getAdapterPosition()).getId(), getData().get(getAdapterPosition()), getAdapterPosition());
                     }
                 }
             });
@@ -259,7 +260,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
     }
 
     public interface OnRecyclerItemClickListener {
-        void OnRecyclerOnItemClickListener(int objectId);
+        void OnRecyclerOnItemClickListener(int objectId, DayPayOrIncomeList dayPayOrIncomeList, int adapterPosition);
     }
 
 

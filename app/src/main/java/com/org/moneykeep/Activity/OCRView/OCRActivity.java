@@ -3,6 +3,8 @@ package com.org.moneykeep.Activity.OCRView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,10 +25,11 @@ import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.ui.camera.CameraActivity;
-import com.dx.dxloadingbutton.lib.AnimationType;
+import com.org.moneykeep.Dialog.DeleteDialog;
 import com.org.moneykeep.R;
 import com.org.moneykeep.RecyclerViewAdapter.DayRecyclerViewAdapter;
 import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.DayPayOrIncomeList;
+import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.OCRBean;
 import com.org.moneykeep.Until.OCRFileUtil;
 import com.org.moneykeep.Until.RetrofitUntil;
 import com.org.moneykeep.databinding.ActivityOcractivityBinding;
@@ -38,8 +41,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +49,7 @@ import retrofit2.Retrofit;
 
 public class OCRActivity extends AppCompatActivity {
     private ActivityOcractivityBinding binding;
+    private DayRecyclerViewAdapter dayRecyclerViewAdapter;
     private final ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -63,6 +65,29 @@ public class OCRActivity extends AppCompatActivity {
 
                                 }
                             });
+                }
+            });
+    private final ActivityResultLauncher<Intent> intentDetailActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    assert intent != null;
+                    Bundle extras = intent.getExtras();
+                    Boolean delete = extras.getBoolean("delete");
+                    Boolean update = extras.getBoolean("update");
+                    int position = extras.getInt("position");
+                    if(delete){
+                        dayRecyclerViewAdapter.removeData(position);
+                    }else if(update){
+                        DayPayOrIncomeList dayPayOrIncomeList = new DayPayOrIncomeList();
+                        dayPayOrIncomeList.setCost(extras.getString("cost"));
+                        dayPayOrIncomeList.setDate(extras.getString("date"));
+                        dayPayOrIncomeList.setCategory(extras.getString("category"));
+                        dayPayOrIncomeList.setRemark(extras.getString("remark"));
+                        dayPayOrIncomeList.setLocation(extras.getString("location"));
+                        dayPayOrIncomeList.setTime(extras.getString("time"));
+                        dayRecyclerViewAdapter.updateData(position,dayPayOrIncomeList);
+                    }
                 }
             });
 
@@ -128,12 +153,9 @@ public class OCRActivity extends AppCompatActivity {
             ToastMakeText("不能上传空数据...");
             return;
         }
-        binding.butSummit.setAnimationEndAction(new Function1<AnimationType, Unit>() {
-            @Override
-            public Unit invoke(AnimationType animationType) {
-                finish();
-                return null;
-            }
+        binding.butSummit.setAnimationEndAction(animationType -> {
+            finish();
+            return null;
         });
         SharedPreferences userdata = getSharedPreferences("user", MODE_PRIVATE);
         String user_account = userdata.getString("user_email", "");
@@ -174,6 +196,10 @@ public class OCRActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
+                    SharedPreferences keep = getSharedPreferences("DeleteOrUpdate", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor user_editor = keep.edit();
+                    user_editor.putBoolean("isdelete", true);
+                    user_editor.apply();
                     binding.butSummit.loadingSuccessful();
                     ToastMakeText("数据上传成功...");
                 }
@@ -259,7 +285,28 @@ public class OCRActivity extends AppCompatActivity {
         List<DayPayOrIncomeList> data = OrganizeData(wordsResultList, index, year);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
-        DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
+        dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
+        dayRecyclerViewAdapter.setSetOnRecyclerItemLongClickListener((thisAdapter, position, Data) -> {
+            DeleteDialog dialog = new DeleteDialog(OCRActivity.this);
+            dialog.setiOconfirmListener(dialog1 -> dayRecyclerViewAdapter.removeData(position));
+            dialog.show();
+        });
+        dayRecyclerViewAdapter.setOnRecyclerItemClickListener(new DayRecyclerViewAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void OnRecyclerOnItemClickListener(int objectId, DayPayOrIncomeList dayPayOrIncomeList, int adapterPosition) {
+                ComponentName componentName = new ComponentName(OCRActivity.this, OCRDetailActivity.class);
+                Intent intent = new Intent();
+                intent.setComponent(componentName);
+                Bundle bundle = new Bundle();
+                bundle.putString("cost",dayPayOrIncomeList.getCost());
+                bundle.putString("date",dayPayOrIncomeList.getDate() + " " + dayPayOrIncomeList.getTime());
+                bundle.putString("remark",dayPayOrIncomeList.getRemark());
+                bundle.putString("location",dayPayOrIncomeList.getLocation());
+                bundle.putInt("position",adapterPosition);
+                intent.putExtras(bundle);
+                intentDetailActivityResultLauncher.launch(intent);
+            }
+        });
         binding.recyclerView.setAdapter(dayRecyclerViewAdapter);
         dayRecyclerViewAdapter.setData(data);
         dayRecyclerViewAdapter.notifyDataSetChanged();
@@ -273,18 +320,19 @@ public class OCRActivity extends AppCompatActivity {
         String PayOrIncomeRegex = "^([+]?|[-])(\\d+)(\\.\\d{1,2})?$";
         Pattern MonthAndDayRegexCompile = Pattern.compile(MonthAndDayRegex);
         Pattern PayOrIncomeRegexCompile = Pattern.compile(PayOrIncomeRegex);
-        String ResultDate = null;
-        String ResultCost;
-        String ResultRemark;
-        String month;
-        String day;
-        String min = null;
-        String sec = null;
-        String date = null;
-        String time = null;
+
         data = new ArrayList<>();
         for (int indexFor = index; indexFor < wordsResultList.size(); indexFor++) {
             Matcher matcher = PayOrIncomeRegexCompile.matcher(wordsResultList.get(indexFor).getWords());
+            String ResultDate = null;
+            String ResultCost;
+            String ResultRemark;
+            String month;
+            String day;
+            String min = null;
+            String sec = null;
+            String date = null;
+            String time = null;
             if (matcher.find()) {
 
                 ResultCost = matcher.group();
@@ -305,8 +353,7 @@ public class OCRActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if(ResultRemark == null || ResultDate == null){
-                    ToastMakeText("账单数据不完整...");
+                if (ResultRemark == null || ResultDate == null) {
                     continue;
                 }
                 DayPayOrIncomeList dayPayOrIncomeList = new DayPayOrIncomeList();
@@ -347,7 +394,8 @@ public class OCRActivity extends AppCompatActivity {
         }, getApplicationContext());
 
     }
-    private void ToastMakeText(String Message){
+
+    private void ToastMakeText(String Message) {
         Toast.makeText(getApplicationContext(), Message, Toast.LENGTH_LONG).show();
     }
 

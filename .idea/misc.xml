@@ -3,15 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/delete_dialog.xml" value="0.202" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/edittext_select.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/ly_background.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/ly_background_details.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/ly_background_plan.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/pay_button_background_no.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/pay_button_background_selector.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/pay_button_background_yes.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/save_item_textview_background.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/save_item_textview_background_1.xml" value="0.212" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/drawable/user_fragment_setting_background.xml" value="0.212" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_add_pay_event.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_add_save_money_plan.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_details.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_forget_password.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_get_location.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_ocractivity.xml" value="0.340625" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_ocrdetail.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_user_mian.xml" value="0.2140625" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_home.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_notifications.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_delete_dialog.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_update_dialog.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_day_payorincome.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_month_payorincome.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_savemoney.xml" value="0.18072916666666666" />

@@ -1,5 +1,6 @@
 package com.org.moneykeep.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -65,6 +67,11 @@ public class UpdateDialog extends Dialog {
         return this;
     }
 
+    public void setLinearLayout_locationINVISIBLE() {
+        LinearLayout_location = findViewById(R.id.linearLayout_location);
+        LinearLayout_location.setVisibility(View.VISIBLE);
+    }
+
     public interface IOnCancelListener {
         void oncancel(UpdateDialog dialog);
 
@@ -76,9 +83,10 @@ public class UpdateDialog extends Dialog {
 
     private Button but_cancel, but_summit, but_date, but_time, but_type;
     private RadioButton radio_pay, radio_income;
-    private TextView tv_update, tv_remark;
+    private TextView tv_update, tv_remark, tv_update_location, tv_location;
     private EditText et_cost;
     private String cost, date, time, remark, type;
+    private LinearLayout LinearLayout_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +125,9 @@ public class UpdateDialog extends Dialog {
         type = data.getType();
         remark = data.getRemark();
 
-        if (Double.valueOf(cost) < 0) {
+        if (Double.parseDouble(cost) < 0) {
             radio_pay.setChecked(true);
-            et_cost.setText(String.valueOf(-Double.valueOf(cost)));
+            et_cost.setText(String.valueOf(-Double.parseDouble(cost)));
         } else {
             radio_income.setChecked(true);
             et_cost.setText(cost);
@@ -129,11 +137,15 @@ public class UpdateDialog extends Dialog {
         but_time.setText(time);
         but_type.setText(type);
         tv_remark.setText(remark);
+        if (data.getLocation() != null) {
+            tv_location.setText(data.getLocation());
+        }
 
     }
 
 
     private class Onclick implements View.OnClickListener {
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -141,22 +153,25 @@ public class UpdateDialog extends Dialog {
                     UpdateList newUpdateList = new UpdateList();
                     //UpdateList oldUpdateList = getList();
                     double cost = Double.parseDouble(et_cost.getText().toString());
-                   
+
                     if (radio_pay.isChecked()) {
                         newUpdateList.setCost("-" + cost);
                     } else {
-                        newUpdateList.setCost(String.valueOf(cost));
+                        newUpdateList.setCost("-" + cost);
                     }
                     newUpdateList.setType(but_type.getText().toString());
                     newUpdateList.setRemark(tv_remark.getText().toString());
 
                     String newDate = but_date.getText().toString();
                     String newTime = but_time.getText().toString();
+                    if (LinearLayout_location.getVisibility() == View.VISIBLE) {
+                        newUpdateList.setLocation(tv_location.getText().toString());
+                    }
                     newUpdateList.setDate(newDate + " " + newTime);
                     newUpdateList.setId(list.getId());
 
                     if (iOconfirmListener != null) {
-                        iOconfirmListener.oncofirm(UpdateDialog.this,newUpdateList);
+                        iOconfirmListener.oncofirm(UpdateDialog.this, newUpdateList);
                     }
                     dismiss();
                     break;
@@ -178,9 +193,26 @@ public class UpdateDialog extends Dialog {
                 case R.id.tv_update:
                     getRemark();
                     break;
+                case R.id.tv_update_location:
+                    getLocationDialog();
+                    break;
 
             }
         }
+    }
+
+    private void getLocationDialog() {
+        UpdateRemarkDialog updateRemarkDialog = new UpdateRemarkDialog(getContext());
+        updateRemarkDialog.setiOconfirmListener(new UpdateRemarkDialog.IOconfirmListener() {
+            @Override
+            public void oncofirm(UpdateRemarkDialog dialog, String oldLocation) {
+                tv_location.setText(oldLocation);
+            }
+        });
+        updateRemarkDialog.setOldRemark(tv_location.getText().toString());
+        Window window = updateRemarkDialog.getWindow();
+        window.setWindowAnimations(R.style.NullAnimationDialog);
+        updateRemarkDialog.show();
     }
 
     private void getRemark() {
@@ -240,6 +272,7 @@ public class UpdateDialog extends Dialog {
         Calendar c = Calendar.getInstance();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 int month = i1 + 1;
@@ -256,6 +289,7 @@ public class UpdateDialog extends Dialog {
 
     private void findId() {
         tv_update = findViewById(R.id.tv_update);
+        tv_location = findViewById(R.id.tv_location);
         tv_remark = findViewById(R.id.tv_remark);
         but_summit = findViewById(R.id.but_summit);
         but_cancel = findViewById(R.id.but_cancel);
@@ -265,6 +299,7 @@ public class UpdateDialog extends Dialog {
         radio_pay = findViewById(R.id.radio_pay);
         radio_income = findViewById(R.id.radio_income);
         et_cost = findViewById(R.id.et_cost);
+        tv_update_location = findViewById(R.id.tv_update_location);
     }
 
     private void setListen() {
@@ -275,7 +310,8 @@ public class UpdateDialog extends Dialog {
         but_time.setOnClickListener(onclick);
         but_type.setOnClickListener(onclick);
         tv_update.setOnClickListener(onclick);
-        et_cost.setFilters(new InputFilter[]{new InputFilterMinMax(0,1000000)});
+        tv_update_location.setOnClickListener(onclick);
+        et_cost.setFilters(new InputFilter[]{new InputFilterMinMax(0, 1000000)});
     }
 
 

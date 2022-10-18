@@ -293,7 +293,7 @@ public class AMonthRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
             dayRecyclerViewAdapter.setOnRecyclerItemClickListener(new DayRecyclerViewAdapter.OnRecyclerItemClickListener() {
                 @Override
-                public void OnRecyclerOnItemClickListener(int id) {
+                public void OnRecyclerOnItemClickListener(int id, DayPayOrIncomeList dayPayOrIncomeList, int adapterPosition) {
                     ComponentName componentName = new ComponentName(getContext(), DetailsActivity.class);
                     Intent intent = new Intent();
                     intent.setComponent(componentName);

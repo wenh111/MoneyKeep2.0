@@ -1,5 +1,6 @@
 package com.org.moneykeep.Dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,13 +12,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.org.moneykeep.Activity.OCRView.OCRActivity;
 import com.org.moneykeep.R;
 
 public class DeleteDialog extends Dialog {
-    public DeleteDialog(@NonNull Context context) {
+    public DeleteDialog( @NonNull Context context) {
         super(context);
     }
-
+    public DeleteDialog(@NonNull Activity activity) {
+        super(activity);
+    }
     public DeleteDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
@@ -50,7 +54,6 @@ public class DeleteDialog extends Dialog {
     }
 
 
-    private Button but_cancel,but_summit;
     private TextView text;
     private String sText = "";
     @Override
@@ -60,8 +63,8 @@ public class DeleteDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//设置Dialog背景透明
         setContentView(R.layout.layout_delete_dialog);
         text = findViewById(R.id.text);
-        but_summit = findViewById(R.id.but_summit);
-        but_cancel = findViewById(R.id.but_cancel);
+        Button but_summit = findViewById(R.id.but_summit);
+        Button but_cancel = findViewById(R.id.but_cancel);
 
         if(!sText.equals("")){
             text.setText(sText);

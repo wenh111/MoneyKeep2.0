@@ -61,10 +61,7 @@ public class LocalForegroundService extends Service {
         Log.v("dimos", "LocalForegroundService");
         // 创建 Binder 对象
         myBinder = new MyBinder();
-        IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-        localIntentFilter.setPriority(2147483647);
-        MessageRecevier localMessageReceiver = new MessageRecevier();
-        registerReceiver(localMessageReceiver, localIntentFilter);
+
         // 启动前台进程
         startService();
     }
@@ -117,7 +114,6 @@ public class LocalForegroundService extends Service {
     private void bindService() {
         // 绑定 另外一个 服务
         // LocalForegroundService 与 RemoteForegroundService 两个服务互相绑定
-
         // 创建连接对象
         Connection connection = new Connection();
 
@@ -139,6 +135,10 @@ public class LocalForegroundService extends Service {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             // 服务绑定成功时回调
+            IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            localIntentFilter.setPriority(2147483647);
+            MessageRecevier localMessageReceiver = new MessageRecevier();
+            registerReceiver(localMessageReceiver, localIntentFilter);
         }
 
         @Override

@@ -230,7 +230,6 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
                         HomeFragmentAPI api = retrofit.create(HomeFragmentAPI.class);
                         Call<Integer> integerCall = api.DeleteDayPayMessage(delete_ObjectId);
                         integerCall.enqueue(new Callback<Integer>() {
-                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -269,7 +268,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
 
             dayRecyclerViewAdapter.setOnRecyclerItemClickListener(new DayRecyclerViewAdapter.OnRecyclerItemClickListener() {
                 @Override
-                public void OnRecyclerOnItemClickListener(int id) {
+                public void OnRecyclerOnItemClickListener(int id, DayPayOrIncomeList dayPayOrIncomeList, int adapterPosition) {
                     ComponentName componentName = new ComponentName(getContext(), DetailsActivity.class);
                     Intent intent = new Intent();
                     intent.setComponent(componentName);

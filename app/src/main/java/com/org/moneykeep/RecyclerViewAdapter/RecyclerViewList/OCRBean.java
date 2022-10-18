@@ -1,4 +1,4 @@
-package com.org.moneykeep.Activity.OCRView;
+package com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList;
 
 import java.util.List;
 

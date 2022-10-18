@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".Until.DemoApplication"
@@ -31,6 +31,9 @@
         android:theme="@style/Theme.MoneyKeep"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
+        <activity
+            android:name=".Activity.OCRView.OCRDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".Activity.OCRView.OCRActivity"
             android:exported="false" />
