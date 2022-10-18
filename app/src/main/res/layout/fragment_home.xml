@@ -210,15 +210,21 @@
                     android:textStyle="bold" />
             </RadioGroup>
 
-            <ImageView
-                android:id="@+id/image_radio"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/image_radio_linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="3dp"
-                android:src="@mipmap/down_16" />
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/image_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@mipmap/down_16" />
+            </LinearLayout>
         </LinearLayout>
 
 

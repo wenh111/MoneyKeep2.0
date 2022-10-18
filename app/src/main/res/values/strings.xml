@@ -64,6 +64,8 @@
     <string name="isdoing">进行中</string>
     <string name="new_plan">+ 新建</string>
     <string name="custom">自定义</string>
+    <string name="back">返回</string>
+    <string name="pick_picture">选择图片</string>
 
 
     <string-array name="pay">

@@ -23,6 +23,7 @@ import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.ui.camera.CameraActivity;
+import com.dx.dxloadingbutton.lib.AnimationType;
 import com.org.moneykeep.R;
 import com.org.moneykeep.RecyclerViewAdapter.DayRecyclerViewAdapter;
 import com.org.moneykeep.RecyclerViewAdapter.RecyclerViewList.DayPayOrIncomeList;
@@ -37,6 +38,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +55,7 @@ public class OCRActivity extends AppCompatActivity {
                             new RecognizeService.ServiceListener() {
                                 @Override
                                 public void onResult(OCRBean OCRJason) {
-                                    infoPopText(OCRJason);
+                                    ShowMessages(OCRJason);
                                 }
 
                                 @Override
@@ -74,7 +77,7 @@ public class OCRActivity extends AppCompatActivity {
         localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags;
 
         binding.butFinish.getBackground().setAlpha(0);
-        binding.butSummit.getBackground().setAlpha(0);
+        binding.buttonPick.getBackground().setAlpha(0);
 
         requestPermission();
         initAccessToken();
@@ -85,7 +88,7 @@ public class OCRActivity extends AppCompatActivity {
 
     private void setListen() {
         Onclick onclick = new Onclick();
-        binding.buttonFirst.setOnClickListener(onclick);
+        binding.buttonPick.setOnClickListener(onclick);
         binding.butSummit.setOnClickListener(onclick);
         binding.butFinish.setOnClickListener(onclick);
     }
@@ -95,7 +98,7 @@ public class OCRActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.button_first:
+                case R.id.button_pick:
                     if (!checkTokenStatus()) {
                         return;
                     }
@@ -111,6 +114,7 @@ public class OCRActivity extends AppCompatActivity {
                     break;
                 case R.id.but_summit:
                     binding.butSummit.setEnabled(false);
+                    binding.butSummit.startLoading();
                     summitData(data);
                     break;
             }
@@ -120,9 +124,17 @@ public class OCRActivity extends AppCompatActivity {
     private void summitData(List<DayPayOrIncomeList> data) {
         if (data == null || data.size() == 0) {
             binding.butSummit.setEnabled(true);
-            Toast.makeText(getApplicationContext(), "不能上传空数据...", Toast.LENGTH_SHORT).show();
+            binding.butSummit.loadingFailed();
+            ToastMakeText("不能上传空数据...");
             return;
         }
+        binding.butSummit.setAnimationEndAction(new Function1<AnimationType, Unit>() {
+            @Override
+            public Unit invoke(AnimationType animationType) {
+                finish();
+                return null;
+            }
+        });
         SharedPreferences userdata = getSharedPreferences("user", MODE_PRIVATE);
         String user_account = userdata.getString("user_email", "");
         List<PayEventBean> payEventBeanList = new ArrayList<>();
@@ -162,15 +174,16 @@ public class OCRActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    Toast.makeText(getApplicationContext(), "数据上传成功...", Toast.LENGTH_SHORT).show();
-                    finish();
+                    binding.butSummit.loadingSuccessful();
+                    ToastMakeText("数据上传成功...");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
-                Toast.makeText(getApplicationContext(), "数据上传失败:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastMakeText("数据上传失败:" + t.getMessage());
                 binding.butSummit.setEnabled(true);
+                binding.butSummit.loadingFailed();
             }
         });
     }
@@ -205,7 +218,7 @@ public class OCRActivity extends AppCompatActivity {
     private List<DayPayOrIncomeList> data;
 
     @SuppressLint("NotifyDataSetChanged")
-    public void infoPopText(OCRBean OCRJason) {
+    public void ShowMessages(OCRBean OCRJason) {
 
         StringBuilder sb = new StringBuilder();
         for (OCRBean.WordsResultDTO words : OCRJason.getWords_result()) {
@@ -213,14 +226,11 @@ public class OCRActivity extends AppCompatActivity {
             sb.append("\n");
         }
         String dateWord;
-        String YearAndMonth;
+        String YearAndMonth = null;
         String year = "";
         String month = "";
         String regex = "(^+\\d{4})([年])(1[0-2]|0?\\d)([月])";
         Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
-        /*while (matcher.find()) {
-            Log.i("regex", "正则表达式: " + matcher.group());
-        }*/
         int index = 0;
         List<OCRBean.WordsResultDTO> wordsResultList = OCRJason.getWords_result();
         for (OCRBean.WordsResultDTO word : OCRJason.getWords_result()) {
@@ -240,14 +250,13 @@ public class OCRActivity extends AppCompatActivity {
             }
             index++;
         }
-
+        if (YearAndMonth == null) {
+            ToastMakeText("找不到年份索引...");
+            return;
+        }
         Log.v("regex", year + "年" + month + "月");
-        Log.v("regex", "index = " + index + "备注：" + OCRJason.getWords_result().get(index).getWords());
         Log.v("regex", sb.toString());
-        /*for (int indexFor = index; indexFor < wordsResultList.size(); indexFor++) {
-
-        }*/
-        List<DayPayOrIncomeList> data = zhengli(wordsResultList, index, year);
+        List<DayPayOrIncomeList> data = OrganizeData(wordsResultList, index, year);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
@@ -259,22 +268,12 @@ public class OCRActivity extends AppCompatActivity {
         //binding.test.setText(sb.toString());
     }
 
-    private List<DayPayOrIncomeList> zhengli(List<OCRBean.WordsResultDTO> wordsResultList, int index, String year) {
+    private List<DayPayOrIncomeList> OrganizeData(List<OCRBean.WordsResultDTO> wordsResultList, int index, String year) {
         String MonthAndDayRegex = "(1[0-2]|0?\\d)([月])([0-2]\\d|\\d|30|31)([日])(\\s?)([01]\\d|2[0-3])([：])([0-5]\\d)";
         String PayOrIncomeRegex = "^([+]?|[-])(\\d+)(\\.\\d{1,2})?$";
         Pattern MonthAndDayRegexCompile = Pattern.compile(MonthAndDayRegex);
         Pattern PayOrIncomeRegexCompile = Pattern.compile(PayOrIncomeRegex);
-        /*if (PayOrIncomeRegexCompile.matcher(wordsResultList.get(index + 1).getWords()).find()) {
-            Log.v("regex", "金额：" + wordsResultList.get(index + 1).getWords());
-            if (MonthAndDayRegexCompile.matcher(wordsResultList.get(index + 2).getWords()).find()) {
-                Log.v("regex", "时间：" + wordsResultList.get(index + 2).getWords());
-            } else {
-                Log.v("regex", "时间：" + wordsResultList.get(index + 3).getWords());
-            }
-        } else {
-            Log.v("regex", "金额无法获取:" + wordsResultList.get(index + 1).getWords());
-        }*/
-        String ResultDate;
+        String ResultDate = null;
         String ResultCost;
         String ResultRemark;
         String month;
@@ -305,6 +304,10 @@ public class OCRActivity extends AppCompatActivity {
 
                         break;
                     }
+                }
+                if(ResultRemark == null || ResultDate == null){
+                    ToastMakeText("账单数据不完整...");
+                    continue;
                 }
                 DayPayOrIncomeList dayPayOrIncomeList = new DayPayOrIncomeList();
                 dayPayOrIncomeList.setCost(ResultCost);
@@ -344,10 +347,13 @@ public class OCRActivity extends AppCompatActivity {
         }, getApplicationContext());
 
     }
+    private void ToastMakeText(String Message){
+        Toast.makeText(getApplicationContext(), Message, Toast.LENGTH_LONG).show();
+    }
 
     private boolean checkTokenStatus() {
         if (!hasGotToken) {
-            Toast.makeText(getApplicationContext(), "token还未成功获取", Toast.LENGTH_LONG).show();
+            ToastMakeText("token还未成功获取。。。");
         }
         return hasGotToken;
     }

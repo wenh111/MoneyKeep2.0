@@ -64,6 +64,7 @@ public class PayEventStatisticsPresenterImplements implements PayEventStatistics
             map_color.put("其它收入", "#0277BD");
             map_color.put("建设银行", "#103095");
             map_color.put("农业银行", "#0A9183");
+            map_color.put("微信","#07C160");
         }
     }
 
@@ -212,7 +213,7 @@ public class PayEventStatisticsPresenterImplements implements PayEventStatistics
                 String date1 = entry.getKey();
                 String[] date2 = date1.split("-");
                 String day2 = date2[2];
-                int day = Integer.valueOf(day2);
+                int day = Integer.parseInt(day2);
                 for (PayOrIncomeEventListBean.AllPayListDTO costList : entry.getValue()) {
                     double cost = costList.getCost();
                     if (cost < 0) {

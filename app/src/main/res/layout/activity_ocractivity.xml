@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +23,8 @@
             android:layout_weight="2"
             android:minHeight="48dp"
             android:src="@mipmap/finish_48"
-            tools:ignore="NestedWeights" />
+            tools:ignore="NestedWeights"
+            android:contentDescription="@string/back" />
 
         <TextView
             android:id="@+id/testView"
@@ -36,13 +38,14 @@
             android:textSize="25sp" />
 
         <ImageButton
-            android:id="@+id/but_summit"
+            android:id="@+id/button_pick"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
             android:minHeight="48dp"
-            android:src="@mipmap/summit_48_break" />
+            android:contentDescription="@string/pick_picture"
+            android:src="@mipmap/camera_48" />
 
     </LinearLayout>
 
@@ -55,21 +58,24 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/test"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"/>
 
-        <Button
-            android:id="@+id/button_first"
-            android:layout_width="wrap_content"
+
+        <com.dx.dxloadingbutton.lib.LoadingButton
+            android:id="@+id/but_summit"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:text="文字识别" />
+            app:lb_btnColor="@color/blue"
+            app:lb_btnDisabledColor="#cccccc"
+            app:lb_btnRippleColor="#000000"
+            app:lb_btnText="上传账单"
+            app:lb_cornerRadius="20dp"
+            app:lb_disabledTextColor="#999999"
+            app:lb_resetAfterFailed="true"
+            app:lb_rippleEnable="true" />
     </RelativeLayout>
 
 </LinearLayout>

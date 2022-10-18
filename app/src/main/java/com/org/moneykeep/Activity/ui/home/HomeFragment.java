@@ -514,7 +514,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                         }
                     }).show();
                     break;
-                case R.id.image_radio:
+                case R.id.image_radio_linearLayout:
                     if (isMore) {
                         isMore = false;
                         binding.imageRadio.setImageResource(R.mipmap.down_16);
@@ -539,7 +539,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
         but_add.setOnClickListener(onclick);
         radio_group.setOnCheckedChangeListener(checkOnclick);
         binding.lySelectType.setOnClickListener(onclick);
-        binding.imageRadio.setOnClickListener(onclick);
+        binding.imageRadioLinearLayout.setOnClickListener(onclick);
 
     }
 
