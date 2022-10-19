@@ -135,10 +135,7 @@ public class LocalForegroundService extends Service {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             // 服务绑定成功时回调
-            IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-            localIntentFilter.setPriority(2147483647);
-            MessageRecevier localMessageReceiver = new MessageRecevier();
-            registerReceiver(localMessageReceiver, localIntentFilter);
+
         }
 
         @Override

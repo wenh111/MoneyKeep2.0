@@ -127,12 +127,14 @@ public class OCRActivity extends AppCompatActivity {
                     if (!checkTokenStatus()) {
                         return;
                     }
+                    binding.butSummit.startLoading();
                     Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                     intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
                             OCRFileUtil.getSaveFile(getApplicationContext()).getAbsolutePath());
                     intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
                             CameraActivity.CONTENT_TYPE_GENERAL);
                     intentActivityResultLauncher.launch(intent);
+                    binding.butSummit.loadingSuccessful();
                     break;
                 case R.id.but_finish:
                     finish();
