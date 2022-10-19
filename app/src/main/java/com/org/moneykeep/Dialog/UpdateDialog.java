@@ -130,7 +130,12 @@ public class UpdateDialog extends Dialog {
             et_cost.setText(String.valueOf(-Double.parseDouble(cost)));
         } else {
             radio_income.setChecked(true);
-            et_cost.setText(cost);
+            if (cost.contains("+")){
+                et_cost.setText(cost.substring(1));
+            }else{
+                et_cost.setText(cost);
+            }
+
         }
 
         but_date.setText(date);
@@ -157,7 +162,7 @@ public class UpdateDialog extends Dialog {
                     if (radio_pay.isChecked()) {
                         newUpdateList.setCost("-" + cost);
                     } else {
-                        newUpdateList.setCost("-" + cost);
+                        newUpdateList.setCost("+" + cost);
                     }
                     newUpdateList.setType(but_type.getText().toString());
                     newUpdateList.setRemark(tv_remark.getText().toString());
@@ -252,6 +257,7 @@ public class UpdateDialog extends Dialog {
     private void getTime() {
         Calendar c = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 int min = i1;
@@ -299,6 +305,7 @@ public class UpdateDialog extends Dialog {
         radio_pay = findViewById(R.id.radio_pay);
         radio_income = findViewById(R.id.radio_income);
         et_cost = findViewById(R.id.et_cost);
+        LinearLayout_location = findViewById(R.id.linearLayout_location);
         tv_update_location = findViewById(R.id.tv_update_location);
     }
 

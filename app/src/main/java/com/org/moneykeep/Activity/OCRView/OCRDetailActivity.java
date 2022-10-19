@@ -96,7 +96,7 @@ public class OCRDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 updateList = new UpdateList();
                 updateList.setType("微信");
-                updateList.setCost(cost.substring(1));
+                updateList.setCost(cost);
                 updateList.setDate(date);
                 updateList.setRemark(remark);
                 updateList.setLocation(location);
