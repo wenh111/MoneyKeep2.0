@@ -52,12 +52,15 @@ public class OCRActivity extends AppCompatActivity {
     private DayRecyclerViewAdapter dayRecyclerViewAdapter;
     private final ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
+
                 if (result.getResultCode() == Activity.RESULT_OK) {
+                    binding.butSummit.cancelLoading();
                     RecognizeService.recAccurateBasic(getApplicationContext(), OCRFileUtil.getSaveFile(getApplicationContext()).getAbsolutePath(),
                             new RecognizeService.ServiceListener() {
                                 @Override
                                 public void onResult(OCRBean OCRJason) {
                                     ShowMessages(OCRJason);
+
                                 }
 
                                 @Override
@@ -65,6 +68,8 @@ public class OCRActivity extends AppCompatActivity {
 
                                 }
                             });
+                }else{
+                    binding.butSummit.cancelLoading();
                 }
             });
     private final ActivityResultLauncher<Intent> intentDetailActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -111,6 +116,8 @@ public class OCRActivity extends AppCompatActivity {
 
     }
 
+
+
     private void setListen() {
         Onclick onclick = new Onclick();
         binding.buttonPick.setOnClickListener(onclick);
@@ -134,7 +141,6 @@ public class OCRActivity extends AppCompatActivity {
                     intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
                             CameraActivity.CONTENT_TYPE_GENERAL);
                     intentActivityResultLauncher.launch(intent);
-                    binding.butSummit.loadingSuccessful();
                     break;
                 case R.id.but_finish:
                     finish();
@@ -247,7 +253,6 @@ public class OCRActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     public void ShowMessages(OCRBean OCRJason) {
-
         StringBuilder sb = new StringBuilder();
         for (OCRBean.WordsResultDTO words : OCRJason.getWords_result()) {
             sb.append(words.getWords());
