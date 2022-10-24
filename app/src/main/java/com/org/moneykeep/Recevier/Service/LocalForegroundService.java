@@ -61,7 +61,10 @@ public class LocalForegroundService extends Service {
         Log.v("dimos", "LocalForegroundService");
         // 创建 Binder 对象
         myBinder = new MyBinder();
-
+        IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        localIntentFilter.setPriority(2147483647);
+        MessageRecevier localMessageReceiver = new MessageRecevier();
+        registerReceiver(localMessageReceiver, localIntentFilter);
         // 启动前台进程
         startService();
     }

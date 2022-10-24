@@ -495,7 +495,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface.IVie
                             stringArray = requireContext().getResources().getStringArray(R.array.income);
                             type = stringArray[secondValue];
                         } else if (firstValue == 2) {
-                            stringArray = new String[]{"全部类型", "微信"};
+                            stringArray = new String[]{"全部类型", "微信","支付宝"};
                             type = stringArray[secondValue];
                             //but_select_type.setText("全部类型");
                         } else if (firstValue == 3) {

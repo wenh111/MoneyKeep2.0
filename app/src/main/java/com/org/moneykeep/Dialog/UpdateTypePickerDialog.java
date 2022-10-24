@@ -1,5 +1,6 @@
 package com.org.moneykeep.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -92,6 +93,7 @@ public class UpdateTypePickerDialog extends Dialog implements View.OnClickListen
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

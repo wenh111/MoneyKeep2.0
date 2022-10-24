@@ -82,7 +82,7 @@ public class AllTypePickerDialog extends Dialog implements View.OnClickListener 
                     typePicker.setMinValue(0);
                     typePicker.setValue(0);
                 } else if (PayOrIncomePicker.getValue() == 2) {
-                    String[] all = {"全部类型", "微信"};
+                    String[] all = {"全部类型", "微信","支付宝"};
                     typePicker.setDisplayedValues(all);
                     typePicker.setMaxValue(all.length - 1);
                     typePicker.setMinValue(0);
