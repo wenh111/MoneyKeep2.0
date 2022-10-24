@@ -65,6 +65,7 @@ public class PayEventStatisticsPresenterImplements implements PayEventStatistics
             map_color.put("建设银行", "#103095");
             map_color.put("农业银行", "#0A9183");
             map_color.put("微信","#07C160");
+            map_color.put("支付宝","#1BC1FA");
         }
     }
 

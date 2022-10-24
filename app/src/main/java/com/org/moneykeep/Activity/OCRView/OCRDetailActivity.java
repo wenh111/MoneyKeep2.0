@@ -25,6 +25,7 @@ public class OCRDetailActivity extends AppCompatActivity {
     private String date;
     private String location;
     private String remark;
+    private String type;
     private int position;
     private final Map<String, Integer> img = new HashMap<>();
 
@@ -64,6 +65,7 @@ public class OCRDetailActivity extends AppCompatActivity {
             img.put("收转账", R.mipmap.get_transfer_accounts_128);
             img.put("其它收入", R.mipmap.others_128);
             img.put("微信", R.mipmap.wechat_128);
+            img.put("支付宝", R.mipmap.alipay_128);
             img.put("建设银行", R.mipmap.construction_bank_128);
             img.put("农业银行", R.mipmap.agricultural_bank_128);
             img.put("全部类型", R.mipmap.all_128);
@@ -152,9 +154,12 @@ public class OCRDetailActivity extends AppCompatActivity {
         location = bundle.getString("location");
         remark = bundle.getString("remark");
         position = bundle.getInt("position");
+        type = bundle.getString("type");
         binding.detailCost.setText(cost);
         binding.detailTime.setText(date);
         binding.detailLocation.setText(location);
         binding.detailRemark.setText(remark);
+        binding.detailType.setText(type);
+        Glide.with(getApplicationContext()).load(img.getOrDefault(type, R.mipmap.others_128)).into(binding.detailImageView);
     }
 }

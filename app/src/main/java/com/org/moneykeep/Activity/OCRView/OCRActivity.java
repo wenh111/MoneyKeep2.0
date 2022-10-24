@@ -37,6 +37,7 @@ import com.org.moneykeep.retrofitBean.PayEventBean;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,26 +53,30 @@ public class OCRActivity extends AppCompatActivity {
     private DayRecyclerViewAdapter dayRecyclerViewAdapter;
     private final ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
-
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     binding.butSummit.cancelLoading();
                     RecognizeService.recAccurateBasic(getApplicationContext(), OCRFileUtil.getSaveFile(getApplicationContext()).getAbsolutePath(),
                             new RecognizeService.ServiceListener() {
                                 @Override
                                 public void onResult(OCRBean OCRJason) {
-                                    ShowMessages(OCRJason);
+                                    if (OCR_TYPE == 0) {
+                                        ShowWechatMessages(OCRJason);
+                                    } else if (OCR_TYPE == 1) {
+                                        ShowAlipayMessages(OCRJason);
+                                    }
 
                                 }
 
                                 @Override
                                 public void onResult(String error) {
-
                                 }
                             });
-                }else{
+                } else {
                     binding.butSummit.cancelLoading();
                 }
             });
+
+
     private final ActivityResultLauncher<Intent> intentDetailActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -81,9 +86,9 @@ public class OCRActivity extends AppCompatActivity {
                     Boolean delete = extras.getBoolean("delete");
                     Boolean update = extras.getBoolean("update");
                     int position = extras.getInt("position");
-                    if(delete){
+                    if (delete) {
                         dayRecyclerViewAdapter.removeData(position);
-                    }else if(update){
+                    } else if (update) {
                         DayPayOrIncomeList dayPayOrIncomeList = new DayPayOrIncomeList();
                         dayPayOrIncomeList.setCost(extras.getString("cost"));
                         dayPayOrIncomeList.setDate(extras.getString("date"));
@@ -91,10 +96,12 @@ public class OCRActivity extends AppCompatActivity {
                         dayPayOrIncomeList.setRemark(extras.getString("remark"));
                         dayPayOrIncomeList.setLocation(extras.getString("location"));
                         dayPayOrIncomeList.setTime(extras.getString("time"));
-                        dayRecyclerViewAdapter.updateData(position,dayPayOrIncomeList);
+                        dayRecyclerViewAdapter.updateData(position, dayPayOrIncomeList);
                     }
                 }
             });
+
+    private int OCR_TYPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,14 +116,18 @@ public class OCRActivity extends AppCompatActivity {
         binding.butFinish.getBackground().setAlpha(0);
         binding.buttonPick.getBackground().setAlpha(0);
 
+        Bundle bundle = this.getIntent().getExtras();
+        OCR_TYPE = bundle.getInt("type");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
         requestPermission();
         initAccessToken();
         setListen();
 
 
     }
-
-
 
     private void setListen() {
         Onclick onclick = new Onclick();
@@ -252,7 +263,7 @@ public class OCRActivity extends AppCompatActivity {
     private List<DayPayOrIncomeList> data;
 
     @SuppressLint("NotifyDataSetChanged")
-    public void ShowMessages(OCRBean OCRJason) {
+    public void ShowWechatMessages(OCRBean OCRJason) {
         StringBuilder sb = new StringBuilder();
         for (OCRBean.WordsResultDTO words : OCRJason.getWords_result()) {
             sb.append(words.getWords());
@@ -262,7 +273,7 @@ public class OCRActivity extends AppCompatActivity {
         String YearAndMonth = null;
         String year = "";
         String month = "";
-        String regex = "(^+\\d{4})([年])(1[0-2]|0?\\d)([月])";
+        String regex = "(\\d{4})([年])(1[0-2]|0?\\d)([月])";
         Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
         int index = 0;
         List<OCRBean.WordsResultDTO> wordsResultList = OCRJason.getWords_result();
@@ -289,10 +300,7 @@ public class OCRActivity extends AppCompatActivity {
         }
         Log.v("regex", year + "年" + month + "月");
         Log.v("regex", sb.toString());
-        List<DayPayOrIncomeList> data = OrganizeData(wordsResultList, index, year);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
+        List<DayPayOrIncomeList> data = OrganizeWechatData(wordsResultList, index, year);
         dayRecyclerViewAdapter.setSetOnRecyclerItemLongClickListener((thisAdapter, position, Data) -> {
             DeleteDialog dialog = new DeleteDialog(OCRActivity.this);
             dialog.setiOconfirmListener(dialog1 -> dayRecyclerViewAdapter.removeData(position));
@@ -305,11 +313,12 @@ public class OCRActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setComponent(componentName);
                 Bundle bundle = new Bundle();
-                bundle.putString("cost",dayPayOrIncomeList.getCost());
-                bundle.putString("date",dayPayOrIncomeList.getDate() + " " + dayPayOrIncomeList.getTime());
-                bundle.putString("remark",dayPayOrIncomeList.getRemark());
-                bundle.putString("location",dayPayOrIncomeList.getLocation());
-                bundle.putInt("position",adapterPosition);
+                bundle.putString("cost", dayPayOrIncomeList.getCost());
+                bundle.putString("date", dayPayOrIncomeList.getDate() + " " + dayPayOrIncomeList.getTime());
+                bundle.putString("remark", dayPayOrIncomeList.getRemark());
+                bundle.putString("location", dayPayOrIncomeList.getLocation());
+                bundle.putString("type", dayPayOrIncomeList.getCategory());
+                bundle.putInt("position", adapterPosition);
                 intent.putExtras(bundle);
                 intentDetailActivityResultLauncher.launch(intent);
             }
@@ -317,12 +326,161 @@ public class OCRActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(dayRecyclerViewAdapter);
         dayRecyclerViewAdapter.setData(data);
         dayRecyclerViewAdapter.notifyDataSetChanged();
-
-
         //binding.test.setText(sb.toString());
     }
 
-    private List<DayPayOrIncomeList> OrganizeData(List<OCRBean.WordsResultDTO> wordsResultList, int index, String year) {
+    @SuppressLint("NotifyDataSetChanged")
+    private void ShowAlipayMessages(OCRBean OCRJason) {
+        StringBuilder sb = new StringBuilder();
+        for (OCRBean.WordsResultDTO words : OCRJason.getWords_result()) {
+            sb.append(words.getWords());
+            sb.append("\n");
+        }
+        Log.v("AliPayRegex", sb.toString());
+        data = OrganizeAliPayData(OCRJason);
+        if (data == null) {
+            return;
+        }
+        binding.recyclerView.setAdapter(dayRecyclerViewAdapter);
+        dayRecyclerViewAdapter.setSetOnRecyclerItemLongClickListener((thisAdapter, position, Data) -> {
+            DeleteDialog dialog = new DeleteDialog(OCRActivity.this);
+            dialog.setiOconfirmListener(dialog1 -> dayRecyclerViewAdapter.removeData(position));
+            dialog.show();
+        });
+        dayRecyclerViewAdapter.setOnRecyclerItemClickListener(new DayRecyclerViewAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void OnRecyclerOnItemClickListener(int objectId, DayPayOrIncomeList dayPayOrIncomeList, int adapterPosition) {
+                ComponentName componentName = new ComponentName(OCRActivity.this, OCRDetailActivity.class);
+                Intent intent = new Intent();
+                intent.setComponent(componentName);
+                Bundle bundle = new Bundle();
+                bundle.putString("cost", dayPayOrIncomeList.getCost());
+                bundle.putString("date", dayPayOrIncomeList.getDate() + " " + dayPayOrIncomeList.getTime());
+                bundle.putString("remark", dayPayOrIncomeList.getRemark());
+                bundle.putString("location", dayPayOrIncomeList.getLocation());
+                bundle.putString("type", dayPayOrIncomeList.getCategory());
+                bundle.putInt("position", adapterPosition);
+                intent.putExtras(bundle);
+                intentDetailActivityResultLauncher.launch(intent);
+            }
+        });
+        dayRecyclerViewAdapter.setData(data);
+        dayRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private List<DayPayOrIncomeList> OrganizeAliPayData(OCRBean ocrJason) {
+        List<DayPayOrIncomeList> dayPayOrIncomeLists = new ArrayList<>();
+        String monthRegex = "(1[0-2]|0?\\d)([月])";
+        String yearRegex = "(\\d{4})([-])(1[0-2]|0?\\d)";
+        Pattern monthPattern = Pattern.compile(monthRegex);
+        Pattern yearPattern = Pattern.compile(yearRegex);
+        Calendar calendar = Calendar.getInstance();
+        String month = null;
+        String year = null;
+        String day = null;
+        String time = null;
+        int index = 0;
+        for (OCRBean.WordsResultDTO word : ocrJason.getWords_result()) {
+            String wordResult = word.getWords();
+            Matcher monthMatcher = monthPattern.matcher(wordResult);
+            Matcher yearMatcher = yearPattern.matcher(wordResult);
+            if (monthMatcher.find()) {
+                year = String.valueOf(calendar.get(Calendar.YEAR));
+                String monthGroup = monthMatcher.group();
+                month = monthGroup.substring(0, monthGroup.indexOf("月"));
+                Log.v("AliPayRegex", "monthMatcher年月:" + year);
+                break;
+            } else if (yearMatcher.find()) {
+                String[] dates = yearMatcher.group().split("-");
+                year = dates[0];
+                month = dates[1];
+                Log.v("AliPayRegex", "yearMatcher年月:" + year);
+                break;
+            }
+            index++;
+        }
+        if (year == null) {
+            ToastMakeText("找不到年月索引...");
+            return null;
+        }
+        String costRegex = "^([+]?|[-])(\\d+)(\\.\\d{1,2})?$";
+        String dateRegex = "(1[0-2]|0?\\d)([-])([0-2]\\d|\\d|30|31)(\\s?)([01]\\d|2[0-3])([:])([0-5]\\d)";
+        String thisMonthRegex = "(1[0-2]|0?\\d)([-])([0-2]\\d|\\d|30|31)";
+        String thisTimeRegex = "([01]\\d|2[0-3])([:])([0-5]\\d)";
+        String thisChinaTimeRegex = "([01]\\d|2[0-3])([：])([0-5]\\d)";//使用了中文的冒号
+        Pattern costPattern = Pattern.compile(costRegex);
+        Pattern datePattern = Pattern.compile(dateRegex);
+        Pattern thisMonthPattern = Pattern.compile(thisMonthRegex);
+        Pattern thisTimePattern = Pattern.compile(thisTimeRegex);
+        Pattern thisChinaTimePattern = Pattern.compile(thisChinaTimeRegex);
+
+        for (int i = index; i < ocrJason.getWords_result().size(); i++) {
+            String remark;
+            String cost;
+            String[] times = null;
+            String wordResult = ocrJason.getWords_result().get(i).getWords();
+            if (costPattern.matcher(wordResult).find()) {
+                cost = wordResult;
+                if(i + 1 >= ocrJason.getWords_result().size()){
+                    break;
+                }
+                remark = ocrJason.getWords_result().get(i - 1).getWords() + "-" +
+                        ocrJason.getWords_result().get(i + 1).getWords();
+                Log.v("AliPayRegex", "支出:" + cost + "\n" +
+                        "备注:" + remark);
+                for (int j = i; j < ocrJason.getWords_result().size(); j++) {
+                    String thisWord = ocrJason.getWords_result().get(j).getWords();//今天与昨天时间格式
+                    Matcher chinaTimeMatcher = thisChinaTimePattern.matcher(thisWord);//使用了中文冒号的时间格式
+                    Matcher timeMatcher = datePattern.matcher(thisWord);//正常时间格式
+                    if (chinaTimeMatcher.find()) {
+                        if (thisWord.contains("今天")) {
+                            day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                        } else if (thisWord.contains("昨天")) {
+                            day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) - 1);
+                        }
+                        time = chinaTimeMatcher.group();
+                        times = time.split("：");
+                        time = times[0] + ":" + times[1];
+                        Log.v("AliPayRegex", "时间：" + year + "-" + month + "-" + day + "-" + time);
+                        break;
+                    } else if (timeMatcher.find()) {
+                        Matcher matcher = thisMonthPattern.matcher(thisWord);
+                        Matcher matcher1 = thisTimePattern.matcher(thisWord);
+                        String allDate = null;
+                        if (matcher.find() && matcher1.find()) {
+                            allDate = matcher.group();
+                            time = matcher1.group();
+                            times = time.split(":");
+                            String[] allDates = allDate.split("-");
+                            day = allDates[1];
+                        }
+                        Log.v("AliPayRegex", "时间：" + allDate + "-" + time);
+                        break;
+                    }
+                }
+                String date = String.format("%s-%s-%s", year, month, day);
+                if (remark == null || times == null) {
+                    continue;
+                }
+                DayPayOrIncomeList dayPayOrIncomeList = new DayPayOrIncomeList();
+                dayPayOrIncomeList.setCost(cost);
+                dayPayOrIncomeList.setRemark(remark);
+                dayPayOrIncomeList.setDate(date);
+                dayPayOrIncomeList.setTime(time);
+                dayPayOrIncomeList.setLocation("来源：支付宝账单");
+                dayPayOrIncomeList.setInt_time(Integer.parseInt(times[0] + times[1]));
+                dayPayOrIncomeList.setCategory("支付宝");
+                Log.v("AliPayRegex", "备注：" + dayPayOrIncomeList.getRemark() + "\n" +
+                        "金额" + dayPayOrIncomeList.getCost() + "\n" +
+                        "时间" + dayPayOrIncomeList.getDate() + "\n" +
+                        "支付时间" + dayPayOrIncomeList.getTime() + "\n");
+                dayPayOrIncomeLists.add(dayPayOrIncomeList);
+            }
+        }
+        return dayPayOrIncomeLists;
+    }
+
+    private List<DayPayOrIncomeList> OrganizeWechatData(List<OCRBean.WordsResultDTO> wordsResultList, int index, String year) {
         String MonthAndDayRegex = "(1[0-2]|0?\\d)([月])([0-2]\\d|\\d|30|31)([日])(\\s?)([01]\\d|2[0-3])([：])([0-5]\\d)";
         String PayOrIncomeRegex = "^([+]?|[-])(\\d+)(\\.\\d{1,2})?$";
         Pattern MonthAndDayRegexCompile = Pattern.compile(MonthAndDayRegex);
@@ -341,10 +499,12 @@ public class OCRActivity extends AppCompatActivity {
             String date = null;
             String time = null;
             if (matcher.find()) {
-
+                //如果出现符合金额的正则表达式但这一条数据的上一条数据符合日期的正则表达式则退出
+                if (MonthAndDayRegexCompile.matcher(wordsResultList.get(indexFor - 1).getWords()).find()) {
+                    continue;
+                }
                 ResultCost = matcher.group();
                 ResultRemark = wordsResultList.get(indexFor - 1).getWords();
-
                 for (int dataSelect = indexFor; dataSelect < wordsResultList.size(); dataSelect++) {
                     Matcher matcher1 = MonthAndDayRegexCompile.matcher(wordsResultList.get(dataSelect).getWords());
                     if (matcher1.find()) {
@@ -356,7 +516,6 @@ public class OCRActivity extends AppCompatActivity {
                         sec = ResultDate.substring(ResultDate.indexOf("：") + 1);
                         time = min + ":" + sec;
                         //payTime = date + " " + time;
-
                         break;
                     }
                 }

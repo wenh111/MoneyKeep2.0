@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,8 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.org.moneykeep.Activity.AddPayEventView.AddPayEventActivity;
+import com.org.moneykeep.Activity.AddPayEventView.GetLocationActivity;
 import com.org.moneykeep.Activity.ForgetPasswordView.AuthenticationView.ForgetPasswordActivity;
 import com.org.moneykeep.Activity.OCRView.OCRActivity;
 import com.org.moneykeep.Activity.SignInView.SignInActivity;
@@ -274,7 +277,8 @@ public class NotificationsFragment extends Fragment {
         user_icon.setOnClickListener(onclick);
         but_update_password.setOnClickListener(onclick);
         binding.updateName.setOnClickListener(onclick);
-        binding.butOcr.setOnClickListener(onclick);
+        binding.butOcrWechat.setOnClickListener(onclick);
+        binding.butOcrAlipay.setOnClickListener(onclick);
     }
 
     private void onActivityResult(ActivityResult result) {
@@ -370,9 +374,24 @@ public class NotificationsFragment extends Fragment {
                         }
                     }).show();
                     break;
-                case R.id.but_ocr:
-                    Intent OCRiIntent = new Intent(requireContext(), OCRActivity.class);
-                    startActivity(OCRiIntent);
+                case R.id.but_ocr_wechat:
+                    ComponentName wechatComponentName = new ComponentName(requireActivity(), OCRActivity.class);
+                    Intent OCRWechatIntent = new Intent();
+                    OCRWechatIntent.setComponent(wechatComponentName);
+                    Bundle wechatBundle = new Bundle();
+                    wechatBundle.putInt("type",0);
+                    OCRWechatIntent.putExtras(wechatBundle);
+                    startActivity(OCRWechatIntent);
+                    //choosePicture();
+                    break;
+                case R.id.but_ocr_alipay:
+                    ComponentName alipayComponentName = new ComponentName(requireActivity(), OCRActivity.class);
+                    Intent OCRAliPayIntent = new Intent();
+                    OCRAliPayIntent.setComponent(alipayComponentName);
+                    Bundle alipayBundle = new Bundle();
+                    alipayBundle.putInt("type",1);
+                    OCRAliPayIntent.putExtras(alipayBundle);
+                    startActivity(OCRAliPayIntent);
                     //choosePicture();
                     break;
             }

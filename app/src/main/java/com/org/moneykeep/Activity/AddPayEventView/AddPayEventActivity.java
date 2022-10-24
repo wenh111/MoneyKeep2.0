@@ -224,6 +224,7 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
     private void getMessage() {
         GetBankMessageDialog dialog = new GetBankMessageDialog(this);
         dialog.setiOconfirmListener(new GetBankMessageDialog.IOconfirmListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void oncofirm(GetBankMessageDialog dialog, String message) {
                 String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
@@ -308,7 +309,7 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
                 location = ed_location.getText().toString();
                 type = ed_type.getText().toString();
                 remark = ed_remark.getText().toString();
-                money = Double.valueOf(ed_money.getText().toString());
+                money = Double.parseDouble(ed_money.getText().toString());
                 if (RadBut_pay.isChecked()) {
                     money = -money;
                 }
@@ -386,6 +387,7 @@ public class AddPayEventActivity extends AppCompatActivity implements AddPayEven
     private void getTime() {
         ThisTimePickerDialog thisTimePickerDialog = new ThisTimePickerDialog(AddPayEventActivity.this);
         thisTimePickerDialog.but_summit(new ThisTimePickerDialog.IOconfirmListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void oncofirm(ThisTimePickerDialog dialog, String data, String time) {
                 summit_data = data;

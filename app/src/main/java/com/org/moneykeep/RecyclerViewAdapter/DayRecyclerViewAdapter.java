@@ -162,6 +162,8 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                 IntegerColor.put("建设银行", ContextCompat.getColor(getContext(), R.color.Construction_Bank));
                 IntegerColor.put("农业银行", ContextCompat.getColor(getContext(), R.color.Agricultural_Bank));
                 IntegerColor.put("微信", ContextCompat.getColor(getContext(), R.color.wechat));
+                IntegerColor.put("支付宝", ContextCompat.getColor(getContext(), R.color.alipay));
+
             }
             parent_ly = itemView.findViewById(R.id.parent_ly);
             left_color = itemView.findViewById(R.id.left_color);
@@ -191,7 +193,7 @@ public class DayRecyclerViewAdapter extends RecyclerSwipeAdapter<DayRecyclerView
                         float dx = curX - startX;
                         if (Math.abs(dx) < 6) {
                             Log.i("onInterceptTouchEvent", "durationMs == " + durationMs);
-                            if (durationMs < 1000) {
+                            if (durationMs < 500) {
                                 if ((!isOpen(getAdapterPosition()))) {
                                     if (onRecyclerItemClickListener != null) {
                                         closeAllItems();

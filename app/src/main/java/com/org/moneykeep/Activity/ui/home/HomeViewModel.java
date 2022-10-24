@@ -87,6 +87,7 @@ public class HomeViewModel extends ViewModel {
             img.put("建设银行", R.mipmap.construction_bank_128);
             img.put("农业银行", R.mipmap.agricultural_bank_128);
             img.put("微信", R.mipmap.wechat_128);
+            img.put("支付宝", R.mipmap.alipay_128);
             img.put("全部类型", R.mipmap.all_128);
         }
 
