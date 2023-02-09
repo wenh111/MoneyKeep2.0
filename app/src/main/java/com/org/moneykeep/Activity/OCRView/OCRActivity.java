@@ -452,7 +452,7 @@ public class OCRActivity extends AppCompatActivity {
                             time = matcher1.group();
                             times = time.split(":");
                             String[] allDates = allDate.split("-");
-                            day = allDates[1];
+                            day = String.valueOf(Integer.parseInt(allDates[1]));
                         }
                         Log.v("AliPayRegex", "时间：" + allDate + "-" + time);
                         break;

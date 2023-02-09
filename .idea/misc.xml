@@ -21,10 +21,14 @@
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_get_location.xml" value="0.18072916666666666" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_ocractivity.xml" value="0.340625" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_ocrdetail.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_punch_card.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_sign_in.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/activity_user_mian.xml" value="0.2140625" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_home.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/fragment_notifications.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_alltypepicker.xml" value="0.35520833333333335" />
+        <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_bank_message_dialog.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_delete_dialog.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/layout_update_dialog.xml" value="0.35520833333333335" />
         <entry key="..\:/AndroidCode/MoneyKeepApp/app/src/main/res/layout/recycler_view_item_day_payorincome.xml" value="0.18072916666666666" />
